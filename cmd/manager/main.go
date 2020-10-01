@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+  "strings"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	"github.com/operator-framework/operator-sdk/pkg/k8sutil"
@@ -23,6 +24,7 @@ import (
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+  "sigs.k8s.io/controller-runtime/pkg/cache"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"sigs.k8s.io/controller-runtime/pkg/runtime/signals"
 
@@ -95,6 +97,10 @@ func main() {
 		MapperProvider:     restmapper.NewDynamicRESTMapper,
 		MetricsBindAddress: fmt.Sprintf("%s:%d", metricsHost, metricsPort),
 	})
+  if strings.Contains(namespace, ",") {
+    options.Namespace = ""
+    options.NewCache = cache.MultiNamespacedCacheBuilder(strings.Split(namespace, ","))
+              }
 	if err != nil {
 		log.Error(err, "")
 		os.Exit(1)
