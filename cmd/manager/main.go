@@ -68,6 +68,8 @@ func main() {
 	// uniform and structured logs.
 	logf.SetLogger(zap.Logger())
 
+  // Add the Metrics Service
+  addMetrics(ctx, cfg)
 	printVersion()
 
 	namespace, err := k8sutil.GetWatchNamespace()
