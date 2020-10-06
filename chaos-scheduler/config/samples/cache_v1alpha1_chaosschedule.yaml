@@ -1,0 +1,7 @@
+apiVersion: cache.litmuschaos.io/v1alpha1
+kind: Chaosschedule
+metadata:
+  name: chaosschedule-sample
+spec:
+  # Add fields here
+  foo: bar
