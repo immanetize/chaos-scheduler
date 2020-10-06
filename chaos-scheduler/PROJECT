@@ -3,7 +3,7 @@ layout: go.kubebuilder.io/v2
 projectName: chaos-scheduler
 repo: github.com/litmuschaos/chaos-scheduler
 resources:
-- group: cache
+- group: scheduler
   kind: Chaosschedule
   version: v1alpha1
 version: 3-alpha

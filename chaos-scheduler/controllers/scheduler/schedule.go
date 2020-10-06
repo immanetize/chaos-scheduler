@@ -8,11 +8,10 @@ import (
 	ref "k8s.io/client-go/tools/reference"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-  ctrl "sigs.k8s.io/controller-runtime"
-  operatorv1 "github.com/litmuschaos/chaos-operator/pkg/apis/litmuschaos/v1alpha1"
-  schedulerv1alpha1 "github.com/litmuschaos/chaos-scheduler/api/v1alpha1"
-  chaosTypes "github.com/litmuschaos/chaos-scheduler/controllers/types"
-  
+	operatorv1 "github.com/litmuschaos/chaos-operator/pkg/apis/litmuschaos/v1alpha1"
+	schedulerv1alpha1 "github.com/litmuschaos/chaos-scheduler/api/v1alpha1"
+	chaosTypes "github.com/litmuschaos/chaos-scheduler/controllers/types"
+
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

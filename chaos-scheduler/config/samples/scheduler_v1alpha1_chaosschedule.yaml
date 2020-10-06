@@ -1,4 +1,4 @@
-apiVersion: cache.litmuschaos.io/v1alpha1
+apiVersion: scheduler.litmuschaos.io/v1alpha1
 kind: Chaosschedule
 metadata:
   name: chaosschedule-sample

@@ -25,14 +25,11 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
-  "github.com/operator-framework/operator-sdk/pkg/k8sutil"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	cachev1alpha1 "github.com/litmuschaos/chaos-scheduler/api/v1alpha1"
+	schedulerv1alpha1 "github.com/litmuschaos/chaos-scheduler/api/v1alpha1"
 	"github.com/litmuschaos/chaos-scheduler/controllers"
 	// +kubebuilder:scaffold:imports
-  operatorScheme "github.com/litmuschaos/chaos-operator/pkg/client/clientset/versioned/scheme"
-
 )
 
 var (
@@ -43,10 +40,9 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(cachev1alpha1.AddToScheme(scheme))
+	utilruntime.Must(schedulerv1alpha1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
-
 
 func main() {
 	var metricsAddr string
@@ -59,36 +55,13 @@ func main() {
 
 	ctrl.SetLogger(zap.New(zap.UseDevMode(true)))
 
-  setupLog.Info(fmt.Sprintf("Go Version: %s", runtime.Version()))
-  setupLog.Info(fmt.Sprintf("Go OS/Arch: %s/%s", runtime.GOOS, runtime.GOARCH))
-  setupLog.Info(fmt.Sprintf("Version of operator-sdk: %v", sdkVersion.Version))
-
-	namespace, err := k8sutil.GetWatchNamespace()
-  if err != nil {
-    log.Error(err, "Failed to get watch namespace")
-    os.Exit(1)
-  }
-  cfg, err := config.GetConfig()
-  if err != nil {
-    log.Error(err, "")
-    os.Exit(1)
-  }
-
-
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:             scheme,
 		MetricsBindAddress: metricsAddr,
 		Port:               9443,
 		LeaderElection:     enableLeaderElection,
 		LeaderElectionID:   "770f4bfd.litmuschaos.io",
-    Namespace:          namespace,
-    MapperProvider:     restmapper.NewDynamicRESTMapper,
 	})
-  if strings.Contains(namespace, ",") {
-    options.Namespace = ""
-    options.NewCache = cache.MultiNamespacedCacheBuilder(strings.Split(namespace, ","))
-              }
-
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
 		os.Exit(1)
